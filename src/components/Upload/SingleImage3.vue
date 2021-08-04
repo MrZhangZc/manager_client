@@ -7,6 +7,7 @@
       :on-success="handleImageSuccess"
       class="image-uploader"
       drag
+      :headers="importHeaders"
       action="http://60.205.212.67:5002/upload"
     >
       <i class="el-icon-upload" />
@@ -34,6 +35,8 @@
 </template>
 
 <script>
+import store from '@/store'
+
 export default {
   name: 'SingleImageUpload3',
   props: {
@@ -44,8 +47,9 @@ export default {
   },
   data() {
     return {
+      importHeaders: { Authorization: `Bearer ${store.getters.token}` },
       tempUrl: '',
-      dataObj: { token: '', key: '' }
+      dataObj: {}
     }
   },
   computed: {

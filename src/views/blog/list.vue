@@ -27,7 +27,7 @@
 
       <el-table-column width="120px" align="center" label="Author">
         <template slot-scope="scope">
-          <span>{{ scope.row.author.account }}</span>
+          <span>{{ scope.row.author.account || scope.row.author.nickname }}</span>
         </template>
       </el-table-column>
 
