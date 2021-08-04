@@ -63,6 +63,15 @@
       </el-table-column>
 
       <el-table-column
+        label="描述"
+        min-width="150px"
+      >
+        <template slot-scope="{row}">
+          {{ row.desc }}
+        </template>
+      </el-table-column>
+
+      <el-table-column
         label="发布时间"
         width="160px"
         align="center"
@@ -135,6 +144,13 @@
           prop="access"
         >
           <el-input v-model="temp.access" />
+        </el-form-item>
+
+        <el-form-item
+          label="描述"
+          prop="desc"
+        >
+          <el-input v-model="temp.desc" />
         </el-form-item>
 
         <el-form-item v-if="temp.createdAt" label="时间">

@@ -276,7 +276,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
 
-          updateCategory(tempData.id, {name: tempData.name, abbreviation: tempData.abbreviation }).then(res => {
+          updateCategory(tempData.id, { name: tempData.name, abbreviation: tempData.abbreviation }).then(res => {
             if (this.errorInfo(res)) return;
             for (const v of this.list) {
               if (v.id === tempData.id) {

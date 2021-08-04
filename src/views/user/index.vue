@@ -123,10 +123,17 @@
         style="width: 400px; margin-left:50px;"
       >
         <el-form-item
-          label="权限名"
-          prop="mobile"
+          label="账号"
+          prop="account"
         >
-          <el-input v-model="temp.mobile" />
+          <el-input v-model="temp.account" />
+        </el-form-item>
+
+        <el-form-item
+          label="密码"
+          prop="password"
+        >
+          <el-input v-model="temp.password" />
         </el-form-item>
 
         <el-form-item
@@ -235,9 +242,6 @@ export default {
 
     resetTemp() {
       this.temp = {
-        id: undefined,
-        name: "",
-        access: ""
       };
     },
     // 弹起添加界面
