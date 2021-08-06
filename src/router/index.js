@@ -163,36 +163,75 @@ export const asyncRoutes = [
     name: '博客管理',
     meta: {
       title: '博客管理',
-      icon: 'el-icon-notebook-1'
+      icon: 'el-icon-notebook-1',
+      roles: ['admin']
     },
     children: [
       {
         path: 'create',
         component: () => import('@/views/blog/create'),
         name: '写文章',
-        meta: { title: '写文章', icon: 'edit' }
+        meta: { title: '写文章', icon: 'edit', roles: ['admin'] }
       },
       {
         path: 'list',
         component: () => import('@/views/blog/list'),
         name: '文章列表',
-        meta: { title: '文章列表', icon: 'education' }
+        meta: { title: '文章列表', icon: 'education', roles: ['admin'] }
       },
       {
         path: 'edit/:id',
         component: () => import('@/views/blog/edit'),
         name: '编辑文章',
-        meta: { title: '编辑文章', noCache: true, activeMenu: '/blog/list' },
+        meta: { title: '编辑文章', noCache: true, activeMenu: '/blog/list', roles: ['admin'] },
         hidden: true
       },
       {
         path: 'category',
         component: () => import('@/views/blog/category'),
         name: '类别管理',
-        meta: { title: '类别管理', icon: 'list' }
+        meta: { title: '类别管理', icon: 'list', roles: ['admin'] }
       }
     ]
   },
+  {
+    path: '/tool',
+    component: Layout,
+    redirect: '/tool/ocr',
+    name: '小工具',
+    meta: {
+      title: '小工具',
+      icon: 'el-icon-lollipop',
+      roles: ['admin', 'guest']
+    },
+    children: [
+      {
+        path: 'ocr',
+        component: () => import('@/views/tool/ocr'),
+        name: '图片文字识别',
+        meta: { title: '图片文字识别', icon: 'el-icon-picture', roles: ['admin', 'guest'] }
+      },
+      {
+        path: 'category',
+        component: () => import('@/views/blog/category'),
+        name: '类别管理',
+        meta: { title: '类别管理', icon: 'list', roles: ['admin'] }
+      }
+    ]
+  },
+
+  // {
+  //   path: '/icon',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/icons/index'),
+  //       name: 'Icons',
+  //       meta: { title: 'Icons', icon: 'icon', noCache: true }
+  //     }
+  //   ]
+  // },
   // {
   //   path: '/permission',
   //   component: Layout,
@@ -231,19 +270,6 @@ export const asyncRoutes = [
   //         title: 'Role Permission',
   //         roles: ['admin']
   //       }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/icon',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/icons/index'),
-  //       name: 'Icons',
-  //       meta: { title: 'Icons', icon: 'icon', noCache: true }
   //     }
   //   ]
   // },

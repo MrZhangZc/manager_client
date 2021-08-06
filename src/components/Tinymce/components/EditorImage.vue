@@ -12,7 +12,8 @@
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
         class="editor-slide-upload"
-        action="https://httpbin.org/post"
+        :headers="importHeaders"
+        action="https://api.lihailezzc.com/upload"
         list-type="picture-card"
       >
         <el-button size="small" type="primary">
@@ -30,7 +31,7 @@
 </template>
 
 <script>
-// import { getToken } from 'api/qiniu'
+import store from '@/store'
 
 export default {
   name: 'EditorSlideUpload',
@@ -42,6 +43,7 @@ export default {
   },
   data() {
     return {
+      importHeaders: { Authorization: `Bearer ${store.getters.token}` },
       dialogVisible: false,
       listObj: {},
       fileList: []
@@ -53,6 +55,7 @@ export default {
     },
     handleSubmit() {
       const arr = Object.keys(this.listObj).map(v => this.listObj[v])
+      console.log({ arr })
       if (!this.checkAllSuccess()) {
         this.$message('Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!')
         return
@@ -64,10 +67,11 @@ export default {
     },
     handleSuccess(response, file) {
       const uid = file.uid
+      const { data } = response
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
         if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = response.files.file
+          this.listObj[objKeyArr[i]].url = data.key
           this.listObj[objKeyArr[i]].hasSuccess = true
           return
         }
