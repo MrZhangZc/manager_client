@@ -69,3 +69,20 @@ export function deleteCategory(id) {
     method: 'delete'
   })
 }
+
+export function visitorList(query) {
+  return request({
+    url: '/blog/visitor',
+    method: 'get',
+    params: query
+  })
+}
+
+export function visitorGroupList(query) {
+  return request({
+    url: '/blog/visitor/group',
+    method: 'get',
+    params: query
+  })
+}
+

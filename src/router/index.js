@@ -191,6 +191,12 @@ export const asyncRoutes = [
         component: () => import('@/views/blog/category'),
         name: '类别管理',
         meta: { title: '类别管理', icon: 'list', roles: ['admin'] }
+      },
+      {
+        path: 'visitor',
+        component: () => import('@/views/blog/visitor'),
+        name: '访客统计',
+        meta: { title: '访客统计', icon: 'peoples', roles: ['admin'] }
       }
     ]
   },
@@ -220,18 +226,18 @@ export const asyncRoutes = [
     ]
   },
 
-  // {
-  //   path: '/icon',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/icons/index'),
-  //       name: 'Icons',
-  //       meta: { title: 'Icons', icon: 'icon', noCache: true }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/icon',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/icons/index'),
+        name: 'Icons',
+        meta: { title: 'Icons', icon: 'icon', noCache: true }
+      }
+    ]
+  },
   // {
   //   path: '/permission',
   //   component: Layout,
