@@ -8,7 +8,7 @@
       class="image-uploader"
       drag
       :headers="importHeaders"
-      action="https://api.lihailezzc.com/upload?type=blog"
+      action="https://api.lihailezzc.com/upload"
     >
       <i class="el-icon-upload" />
       <div class="el-upload__text">

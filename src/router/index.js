@@ -157,6 +157,56 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/resource',
+    component: Layout,
+    redirect: '/blog/list',
+    name: '资源管理',
+    meta: {
+      title: '资源管理',
+      icon: 'el-icon-folder-checked',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/resource/create'),
+        name: '上传资源',
+        meta: { title: '上传资源', icon: 'el-icon-document-add', roles: ['admin'] }
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/resource/list'),
+        name: '资源列表',
+        meta: { title: '资源列表', icon: 'el-icon-document-copy', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/task',
+    component: Layout,
+    redirect: '/task/email/list',
+    name: '任务管理',
+    meta: {
+      title: '任务管理',
+      icon: 'el-icon-s-platform',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/task/emaillist'),
+        name: '定时邮件任务',
+        meta: { title: '定时邮件任务', icon: 'email', roles: ['admin'] }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/resource/create'),
+        name: '上传资源',
+        meta: { title: '上传资源', icon: 'el-icon-document-add', roles: ['admin'] }
+      }
+    ]
+  },
+  {
     path: '/blog',
     component: Layout,
     redirect: '/blog/list',
@@ -226,18 +276,18 @@ export const asyncRoutes = [
     ]
   },
 
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/icons/index'),
-        name: 'Icons',
-        meta: { title: 'Icons', icon: 'icon', noCache: true }
-      }
-    ]
-  },
+  // {
+  //   path: '/icon',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/icons/index'),
+  //       name: 'Icons',
+  //       meta: { title: 'Icons', icon: 'icon', noCache: true }
+  //     }
+  //   ]
+  // },
   // {
   //   path: '/permission',
   //   component: Layout,

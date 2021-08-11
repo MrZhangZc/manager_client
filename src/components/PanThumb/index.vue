@@ -1,10 +1,10 @@
 <template>
   <div :style="{zIndex:zIndex,height:height,width:width}" class="pan-item">
-    <div class="pan-info">
+    <!-- <div class="pan-info">
       <div class="pan-info-roles-container">
         <slot />
       </div>
-    </div>
+    </div> -->
     <!-- eslint-disable-next-line -->
     <div :style="{backgroundImage: `url(${image})`}" class="pan-thumb"></div>
   </div>
@@ -42,11 +42,9 @@ export default {
   display: inline-block;
   position: relative;
   cursor: default;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .pan-info-roles-container {
-  padding: 20px;
   text-align: center;
 }
 
