@@ -251,6 +251,31 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/crawler',
+    component: Layout,
+    redirect: '/task/crawler/list',
+    name: '爬虫管理',
+    meta: {
+      title: '爬虫管理',
+      icon: 'bug',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'nba/list',
+        component: () => import('@/views/crawler/nba'),
+        name: 'nba爬虫',
+        meta: { title: 'nba爬虫', icon: 'el-icon-basketball', roles: ['admin'] }
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/crawler/list'),
+        name: '收藏列表',
+        meta: { title: '收藏列表', icon: 'el-icon-folder', roles: ['admin'] }
+      }
+    ]
+  },
+  {
     path: '/tool',
     component: Layout,
     redirect: '/tool/ocr',
@@ -268,26 +293,26 @@ export const asyncRoutes = [
         meta: { title: '图片文字识别', icon: 'el-icon-picture', roles: ['admin', 'guest'] }
       },
       {
-        path: 'category',
-        component: () => import('@/views/blog/category'),
-        name: '类别管理',
-        meta: { title: '类别管理', icon: 'list', roles: ['admin'] }
+        path: 'content',
+        component: () => import('@/views/tool/content'),
+        name: '内容获取',
+        meta: { title: '内容获取', icon: 'el-icon-search', roles: ['admin'] }
       }
     ]
   },
 
-  // {
-  //   path: '/icon',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/icons/index'),
-  //       name: 'Icons',
-  //       meta: { title: 'Icons', icon: 'icon', noCache: true }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/icon',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/icons/index'),
+        name: 'Icons',
+        meta: { title: 'Icons', icon: 'icon', noCache: true }
+      }
+    ]
+  },
   // {
   //   path: '/permission',
   //   component: Layout,
