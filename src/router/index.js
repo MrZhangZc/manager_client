@@ -129,83 +129,6 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  // insert
-  // =======  user  =======
-  {
-    path: '/user',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/user'),
-        name: 'User',
-        meta: { title: '用户', icon: 'icon', roles: ['admin'] }
-      }
-    ]
-  },
-  // ===================================
-  {
-    path: '/role',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/role'),
-        name: 'role',
-        meta: { title: '权限', icon: 'icon', roles: ['admin'] }
-      }
-    ]
-  },
-  {
-    path: '/resource',
-    component: Layout,
-    redirect: '/blog/list',
-    name: '资源管理',
-    meta: {
-      title: '资源管理',
-      icon: 'el-icon-folder-checked',
-      roles: ['admin']
-    },
-    children: [
-      {
-        path: 'create',
-        component: () => import('@/views/resource/create'),
-        name: '上传资源',
-        meta: { title: '上传资源', icon: 'el-icon-document-add', roles: ['admin'] }
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/resource/list'),
-        name: '资源列表',
-        meta: { title: '资源列表', icon: 'el-icon-document-copy', roles: ['admin'] }
-      }
-    ]
-  },
-  {
-    path: '/task',
-    component: Layout,
-    redirect: '/task/email/list',
-    name: '任务管理',
-    meta: {
-      title: '任务管理',
-      icon: 'el-icon-s-platform',
-      roles: ['admin']
-    },
-    children: [
-      {
-        path: 'list',
-        component: () => import('@/views/task/emaillist'),
-        name: '定时邮件任务',
-        meta: { title: '定时邮件任务', icon: 'email', roles: ['admin'] }
-      },
-      {
-        path: 'create',
-        component: () => import('@/views/resource/create'),
-        name: '上传资源',
-        meta: { title: '上传资源', icon: 'el-icon-document-add', roles: ['admin'] }
-      }
-    ]
-  },
   {
     path: '/blog',
     component: Layout,
@@ -247,6 +170,56 @@ export const asyncRoutes = [
         component: () => import('@/views/blog/visitor'),
         name: '访客统计',
         meta: { title: '访客统计', icon: 'peoples', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/task',
+    component: Layout,
+    redirect: '/task/email/list',
+    name: '任务管理',
+    meta: {
+      title: '任务管理',
+      icon: 'el-icon-s-platform',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/task/emaillist'),
+        name: '定时邮件任务',
+        meta: { title: '定时邮件任务', icon: 'email', roles: ['admin'] }
+      },
+      {
+        path: 'note',
+        component: () => import('@/views/task/note'),
+        name: '备忘录/提醒',
+        meta: { title: '备忘录/提醒', icon: 'el-icon-document-add', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/resource',
+    component: Layout,
+    redirect: '/blog/list',
+    name: '资源管理',
+    meta: {
+      title: '资源管理',
+      icon: 'el-icon-folder-checked',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/resource/create'),
+        name: '上传资源',
+        meta: { title: '上传资源', icon: 'el-icon-document-add', roles: ['admin'] }
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/resource/list'),
+        name: '资源列表',
+        meta: { title: '资源列表', icon: 'el-icon-document-copy', roles: ['admin'] }
       }
     ]
   },
@@ -300,7 +273,62 @@ export const asyncRoutes = [
       }
     ]
   },
-
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user',
+    name: '用户',
+    meta: {
+      title: '用户',
+      icon: 'el-icon-user-solid',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'user',
+        component: () => import('@/views/user'),
+        name: 'User',
+        meta: { title: '用户', icon: 'el-icon-user', roles: ['admin'] }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/role'),
+        name: 'role',
+        meta: { title: '权限', icon: 'el-icon-lock', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/log',
+    component: Layout,
+    redirect: '/log/cms',
+    name: '系统日志',
+    meta: {
+      title: '系统日志',
+      icon: 'el-icon-files',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'cms',
+        component: () => import('@/views/log/cms'),
+        name: 'cms',
+        meta: { title: 'cms', icon: 'el-icon-s-data', roles: ['admin'] }
+      },
+      {
+        path: 'blog',
+        component: () => import('@/views/log/blog'),
+        name: 'blog',
+        meta: { title: 'blog', icon: 'el-icon-edit', roles: ['admin'] }
+      },
+      {
+        path: 'blog-aggregate',
+        component: () => import('@/views/log/blogAggregate'),
+        name: 'blog聚合',
+        meta: { title: 'blog聚合', icon: 'el-icon-c-scale-to-original', roles: ['admin'] }
+      }
+    ]
+  },
   {
     path: '/icon',
     component: Layout,

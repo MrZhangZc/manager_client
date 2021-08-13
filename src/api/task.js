@@ -27,11 +27,19 @@ export function sendEmail(query) {
 /**
  * 添加对象
  */
-export function addModel(data) {
+export function addNote(data) {
   return request({
-    url: '/resource',
+    url: '/note',
     method: 'post',
     data
+  })
+}
+
+export function fetchNote(query) {
+  return request({
+    url: '/note',
+    method: 'get',
+    params: query
   })
 }
 /**
