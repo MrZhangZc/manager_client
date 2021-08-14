@@ -2,27 +2,27 @@
   <div class="app-container">
     <!-- 功能按钮栏 -->
     <div class="filter-container">
-      <el-input
-        v-model="listQuery.search"
-        placeholder="权限名"
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
+      <el-select v-model="listQuery.type" clearable="" placeholder="请选择" @change="handleFilter">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
+
+      <el-switch
+        v-model="listQuery.showAll"
+        style="margin-left: 10px"
+        active-color="#13ce66"
+        inactive-color="#ff4949"
+        active-text="显示全部"
+        @change="handleFilter"
       />
 
       <el-button
-        v-waves
         class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        @click="handleFilter"
-      >
-        搜索
-      </el-button>
-
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
+        style="margin-left: 10px;margin-top:10px"
         type="primary"
         icon="el-icon-edit"
         @click="handleCreate"
@@ -41,6 +41,33 @@
       highlight-current-row
       style="width: 100%;"
     >
+      <el-table-column
+        label=""
+        align="center"
+        width="240"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="{row}">
+          <el-button
+            type="success"
+            size="mini"
+            icon="el-icon-check"
+            @click="handleFinish(row.id)"
+          >
+            完成
+          </el-button>
+
+          <el-button
+            v-if="row.type === 'remind'"
+            size="mini"
+            type="primary"
+            icon="el-icon-position"
+            @click="handleRemind(row.id)"
+          >
+            立即提醒
+          </el-button>
+        </template>
+      </el-table-column>
       <el-table-column
         label="创建时间"
         width="160px"
@@ -92,7 +119,38 @@
       </el-table-column>
 
       <el-table-column
-        label="Actions"
+        label="提醒时间"
+        min-width="150px"
+        align="center"
+      >
+        <template slot-scope="{row}">
+          <span v-if="row.remind_time">{{ new Date(row.remind_time) | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+          <span v-else>无</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="提醒人"
+        min-width="150px"
+        align="center"
+      >
+        <template slot-scope="{row}">
+          {{ row.remind_to || '无' }}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="是否已提醒"
+        min-width="150px"
+        align="center"
+      >
+        <template slot-scope="{row}">
+          {{ row.remind_out ? '是' : '否' }}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="操作"
         align="center"
         width="180"
         class-name="small-padding fixed-width"
@@ -111,7 +169,7 @@
             size="mini"
             type="danger"
             icon="el-icon-delete"
-            @click="handleDelete(row._id)"
+            @click="handleDelete(row.id)"
           >
             删除
           </el-button>
@@ -210,7 +268,7 @@
 </template>
 
 <script>
-import { fetchNote, addNote, updateModel, deleteModel } from "@/api/task";
+import { fetchNote, remindNote, finishNote, addNote, updateNote, deleteNote } from "@/api/task";
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 export default {
@@ -336,11 +394,10 @@ export default {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-
-          updateModel(tempData._id, tempData).then(res => {
+          updateNote(tempData.id, tempData).then(res => {
             if (this.errorInfo(res)) return;
             for (const v of this.list) {
-              if (v._id === tempData._id) {
+              if (v.id === tempData.id) {
                 this.list.splice(this.list.indexOf(v), 1, tempData);
                 break;
               }
@@ -358,10 +415,10 @@ export default {
         type: "warning"
       })
         .then(() => {
-          deleteModel(id).then(res => {
+          deleteNote(id).then(res => {
             if (this.errorInfo(res)) return;
             for (const v of this.list) {
-              if (v._id === id) {
+              if (v.id === id) {
                 this.list.splice(this.list.indexOf(v), 1);
                 break;
               }
@@ -370,6 +427,32 @@ export default {
             this.successInfo();
           });
         })
+    },
+    handleFinish(id) {
+      this.$confirm("确定完成？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        finishNote(id).then(res => {
+          if (this.errorInfo(res)) return;
+          this.getList()
+          this.successInfo();
+        });
+      })
+    },
+    handleRemind(id) {
+      this.$confirm("确定立即提醒？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        remindNote(id).then(res => {
+          if (this.errorInfo(res)) return;
+          this.getList()
+          this.successInfo();
+        });
+      })
     },
     successInfo() {
       this.$notify({
