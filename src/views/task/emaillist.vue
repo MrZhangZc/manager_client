@@ -2,22 +2,34 @@
   <div class="app-container">
     <!-- 功能按钮栏 -->
     <div class="filter-container">
-      <el-input
-        v-model="listQuery.emailTo"
-        placeholder="邮箱"
-        style="width: 200px;"
-        class="filter-item"
+      <!-- <el-select v-model="listQuery.type" clearable="" placeholder="请选择" @change="handleFilter">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select> -->
+
+      <el-switch
+        v-model="listQuery.showAllRemind"
+        style="margin-left: 10px"
+        active-color="#13ce66"
+        inactive-color="#ff4949"
+        active-text="显示全部"
+        @change="handleFilter"
       />
 
       <el-button
-        v-waves
         class="filter-item"
+        style="margin-left: 10px;margin-top:10px"
         type="primary"
-        icon="el-icon-s-promotion"
-        @click="handleSend"
+        icon="el-icon-edit"
+        @click="handleCreate"
       >
-        立即发送
+        添加
       </el-button>
+
     </div>
     <!-- 数据列表 -->
     <el-table
@@ -30,74 +42,180 @@
       style="width: 100%;"
     >
       <el-table-column
-        label="发布时间"
+        label="提醒时间"
+        min-width="150px"
+        align="center"
+      >
+        <template slot-scope="{row}">
+          <span v-if="row.remind_time">{{ new Date(row.remind_time) | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+          <span v-else>无</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="描述"
+        min-width="150px"
+        align="center"
+      >
+        <template slot-scope="{row}">
+          {{ row.desc }}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="附加信息"
+        min-width="150px"
+        align="center"
+      >
+        <template slot-scope="{row}">
+          {{ row.addition }}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="提醒人"
+        min-width="150px"
+        align="center"
+      >
+        <template slot-scope="{row}">
+          {{ row.remind_to || '无' }}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="是否已提醒"
+        min-width="150px"
+        align="center"
+      >
+        <template slot-scope="{row}">
+          {{ row.remind_out ? '是' : '否' }}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="创建时间"
         width="160px"
         align="center"
       >
-        <template slot-scope="scope">
-          <span>{{ new Date(scope.row.createdAt) | formatTime("{y}-{m}-{d} {h}:{i}") }}</span>
+        <template slot-scope="{row}">
+          <span>{{ new Date(row.createdAt) | formatTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
 
       <el-table-column
-        label="发送到"
-        min-width="150px"
+        label="操作"
+        align="center"
+        width="280"
+        class-name="small-padding fixed-width"
       >
         <template slot-scope="{row}">
-          {{ row.to }}
+          <el-button
+            size="mini"
+            type="primary"
+            icon="el-icon-position"
+            @click="handleRemind(row.id)"
+          >
+            立即提醒
+          </el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            icon="el-icon-edit-outline"
+            @click="handleUpdate(row)"
+          >
+            编辑
+          </el-button>
+
+          <el-button
+            size="mini"
+            type="danger"
+            icon="el-icon-delete"
+            @click="handleDelete(row.id)"
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
-
-      <el-table-column
-        label="结果"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          {{ row.result ? '成功' : '失败' }}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        label="急转弯问题"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          {{ row.quest }}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        label="急转弯答案"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          {{ row.questres }}
-        </template>
-      </el-table-column>
-
-      <!-- <el-table-column
-        label="响应结果"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          {{ row.response }}
-        </template>
-      </el-table-column> -->
     </el-table>
 
     <pagination
       v-show="total>0"
       :total="total"
-      :page.sync="listQuery.currentPage"
-      :limit.sync="listQuery.pageSize"
+      :page.sync="listQuery.start"
+      :limit.sync="listQuery.length"
       @pagination="getList"
     />
+
+    <!-- 添加和修改界面 -->
+
+    <el-dialog
+      :title="textMap[dialogStatus]"
+      :visible.sync="dialogFormVisible"
+    >
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="temp"
+        label-position="left"
+        label-width="70px"
+        style="width: 400px; margin-left:50px;"
+      >
+        <el-form-item
+          label="描述"
+          prop="desc"
+        >
+          <el-input
+            v-model="temp.desc"
+            type="textarea"
+          />
+        </el-form-item>
+
+        <el-form-item label="提醒时间" prop="remind_time">
+          <el-date-picker
+            v-model="temp.remind_time"
+            type="datetime"
+            placeholder="选择提醒时间"
+          />
+        </el-form-item>
+
+        <el-form-item label="提醒人" prop="remind_to">
+          <el-input
+            v-model="temp.remind_to"
+          />
+        </el-form-item>
+
+        <el-form-item
+          label="附加信息"
+          prop="addition"
+        >
+          <el-input
+            v-model="temp.addition"
+            type="textarea"
+          />
+        </el-form-item>
+
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="dialogFormVisible = false">
+          取消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="dialogStatus==='create'?createData():updateData()"
+        >
+          提交
+        </el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
 
 <script>
-import { fetchEmail, sendEmail, addModel, updateModel, deleteModel } from "@/api/task";
+import { fetchNote, remindNote, finishNote, addNote, updateNote, deleteNote } from "@/api/task";
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 export default {
@@ -115,22 +233,32 @@ export default {
   },
   data() {
     return {
+      options: [
+        {
+          value: 'note',
+          label: '记录'
+        },
+        {
+          value: 'remind',
+          label: '提醒'
+        }
+      ],
       tableKey: 0,
       list: null,
       total: 0,
       listLoading: true,
       listQuery: {
-        currentPage: 1,
-        pageSize: 20,
-
+        // 查询关键字
+        isPaging: true,
+        start: 1,
+        length: 20,
+        type: 'remind',
         search: undefined
       },
       showReviewer: false,
       // 表单提交的数据
       temp: {
-        id: undefined,
-        name: "",
-        access: ""
+        desc: ''
       },
       dialogFormVisible: false,
       dialogStatus: "",
@@ -140,11 +268,17 @@ export default {
       },
       // 验证方法
       rules: {
-        name: [
-          { required: true, message: "名称必须填写", trigger: "blur" }
+        type: [
+          { required: true, message: "类型必须填写", trigger: "blur" }
         ],
-        access: [
-          { required: true, message: "权限必须填写", trigger: "blur" }
+        desc: [
+          { required: true, message: "描述必须填写", trigger: "blur" }
+        ],
+        remind_time: [
+          { required: true, message: "提醒时间必须填写", trigger: "blur" }
+        ],
+        remind_to: [
+          { required: true, message: "提醒人必须填写", trigger: "blur" }
         ]
       }
     };
@@ -155,7 +289,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      fetchEmail(this.listQuery).then(response => {
+      fetchNote(this.listQuery).then(response => {
         this.list = response.data.data.list;
         this.total = response.data.data.total;
 
@@ -163,15 +297,8 @@ export default {
       });
     },
     handleFilter() {
-      sendEmail(this.listQuery).then(response => {
-        console.log(response)
-      });
-    },
-    handleSend() {
-      sendEmail(this.listQuery).then(response => {
-        if (this.errorInfo(response)) return;
-        this.successInfo();
-      });
+      this.listQuery.start = 1;
+      this.getList();
     },
 
     resetTemp() {
@@ -191,7 +318,8 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          addModel(this.temp).then(res => {
+          addNote(Object.assign(this.temp, { type: 'remind' })).then(res => {
+            console.log(this.temp)
             if (this.errorInfo(res)) return;
             this.list.unshift(res.data.data);
             this.dialogFormVisible = false;
@@ -213,8 +341,7 @@ export default {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-
-          updateModel(tempData.id, tempData).then(res => {
+          updateNote(tempData.id, tempData).then(res => {
             if (this.errorInfo(res)) return;
             for (const v of this.list) {
               if (v.id === tempData.id) {
@@ -235,7 +362,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          deleteModel(id).then(res => {
+          deleteNote(id).then(res => {
             if (this.errorInfo(res)) return;
             for (const v of this.list) {
               if (v.id === id) {
@@ -248,9 +375,36 @@ export default {
           });
         })
     },
+    handleFinish(id) {
+      this.$confirm("确定完成？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        finishNote(id).then(res => {
+          if (this.errorInfo(res)) return;
+          this.getList()
+          this.successInfo();
+        });
+      })
+    },
+    handleRemind(id) {
+      this.$confirm("确定立即提醒？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        remindNote(id).then(res => {
+          if (this.errorInfo(res)) return;
+          this.getList()
+          this.successInfo();
+        });
+      })
+    },
     successInfo() {
       this.$notify({
-        message: "邮件发送成功",
+        title: "成功",
+        message: "信息操作成功",
         type: "success",
         duration: 2000
       });

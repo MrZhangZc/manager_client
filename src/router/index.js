@@ -176,7 +176,7 @@ export const asyncRoutes = [
   {
     path: '/task',
     component: Layout,
-    redirect: '/task/email/list',
+    redirect: '/task/list',
     name: '任务管理',
     meta: {
       title: '任务管理',
@@ -191,10 +191,16 @@ export const asyncRoutes = [
         meta: { title: '定时邮件任务', icon: 'email', roles: ['admin'] }
       },
       {
+        path: 'weather',
+        component: () => import('@/views/task/weatherEmail'),
+        name: '每日天气邮件',
+        meta: { title: '每日天气邮件', icon: 'el-icon-sunrise', roles: ['admin'] }
+      },
+      {
         path: 'note',
         component: () => import('@/views/task/note'),
-        name: '备忘录/提醒',
-        meta: { title: '备忘录/提醒', icon: 'el-icon-document-add', roles: ['admin'] }
+        name: '备忘录',
+        meta: { title: '备忘录', icon: 'el-icon-document-add', roles: ['admin'] }
       }
     ]
   },

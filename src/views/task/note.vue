@@ -2,7 +2,7 @@
   <div class="app-container">
     <!-- 功能按钮栏 -->
     <div class="filter-container">
-      <el-select v-model="listQuery.type" clearable="" placeholder="请选择" @change="handleFilter">
+      <el-select v-model="listQuery.note_type" clearable="" placeholder="请选择" @change="handleFilter">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -42,33 +42,6 @@
       style="width: 100%;"
     >
       <el-table-column
-        label=""
-        align="center"
-        width="240"
-        class-name="small-padding fixed-width"
-      >
-        <template slot-scope="{row}">
-          <el-button
-            type="success"
-            size="mini"
-            icon="el-icon-check"
-            @click="handleFinish(row.id)"
-          >
-            完成
-          </el-button>
-
-          <el-button
-            v-if="row.type === 'remind'"
-            size="mini"
-            type="primary"
-            icon="el-icon-position"
-            @click="handleRemind(row.id)"
-          >
-            立即提醒
-          </el-button>
-        </template>
-      </el-table-column>
-      <el-table-column
         label="创建时间"
         width="160px"
         align="center"
@@ -84,7 +57,7 @@
         align="center"
       >
         <template slot-scope="{row}">
-          {{ row.type === 'note' ? '记录' : '提醒' }}
+          {{ row.note_type === 'life' ? '日常' : '计划' }}
         </template>
       </el-table-column>
 
@@ -119,43 +92,20 @@
       </el-table-column>
 
       <el-table-column
-        label="提醒时间"
-        min-width="150px"
-        align="center"
-      >
-        <template slot-scope="{row}">
-          <span v-if="row.remind_time">{{ new Date(row.remind_time) | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
-          <span v-else>无</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        label="提醒人"
-        min-width="150px"
-        align="center"
-      >
-        <template slot-scope="{row}">
-          {{ row.remind_to || '无' }}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        label="是否已提醒"
-        min-width="150px"
-        align="center"
-      >
-        <template slot-scope="{row}">
-          {{ row.remind_out ? '是' : '否' }}
-        </template>
-      </el-table-column>
-
-      <el-table-column
         label="操作"
         align="center"
-        width="180"
+        width="260"
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{row}">
+          <el-button
+            type="success"
+            size="mini"
+            icon="el-icon-check"
+            @click="handleFinish(row.id)"
+          >
+            完成
+          </el-button>
           <el-button
             type="primary"
             size="mini"
@@ -201,9 +151,9 @@
       >
         <el-form-item
           label="类型"
-          prop="type"
+          prop="note_type"
         >
-          <el-select v-model="temp.type" clearable="" placeholder="请选择" @change="getList">
+          <el-select v-model="temp.note_type" clearable="" placeholder="请选择" @change="getList">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -220,20 +170,6 @@
           <el-input
             v-model="temp.desc"
             type="textarea"
-          />
-        </el-form-item>
-
-        <el-form-item v-if="temp.type === 'remind'" label="提醒时间" prop="remind_time">
-          <el-date-picker
-            v-model="temp.remind_time"
-            type="datetime"
-            placeholder="选择提醒时间"
-          />
-        </el-form-item>
-
-        <el-form-item v-if="temp.type === 'remind'" label="提醒人" prop="remind_to">
-          <el-input
-            v-model="temp.remind_to"
           />
         </el-form-item>
 
@@ -288,12 +224,12 @@ export default {
     return {
       options: [
         {
-          value: 'note',
-          label: '记录'
+          value: 'life',
+          label: '日常'
         },
         {
-          value: 'remind',
-          label: '提醒'
+          value: 'it',
+          label: '技术'
         }
       ],
       tableKey: 0,
@@ -305,7 +241,7 @@ export default {
         isPaging: true,
         start: 1,
         length: 20,
-
+        type: 'note',
         search: undefined
       },
       showReviewer: false,
@@ -322,17 +258,11 @@ export default {
       },
       // 验证方法
       rules: {
-        type: [
+        note_type: [
           { required: true, message: "类型必须填写", trigger: "blur" }
         ],
         desc: [
           { required: true, message: "描述必须填写", trigger: "blur" }
-        ],
-        remind_time: [
-          { required: true, message: "提醒时间必须填写", trigger: "blur" }
-        ],
-        remind_to: [
-          { required: true, message: "提醒人必须填写", trigger: "blur" }
         ]
       }
     };
@@ -372,7 +302,7 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          addNote(this.temp).then(res => {
+          addNote(Object.assign(this.temp, { type: 'note' })).then(res => {
             if (this.errorInfo(res)) return;
             this.list.unshift(res.data.data);
             this.dialogFormVisible = false;
