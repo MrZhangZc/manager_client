@@ -226,6 +226,12 @@ export const asyncRoutes = [
         component: () => import('@/views/resource/list'),
         name: '资源列表',
         meta: { title: '资源列表', icon: 'el-icon-document-copy', roles: ['admin'] }
+      },
+      {
+        path: 'site',
+        component: () => import('@/views/resource/site'),
+        name: '网站收藏',
+        meta: { title: '网站收藏', icon: 'el-icon-link', roles: ['admin'] }
       }
     ]
   },
@@ -335,18 +341,18 @@ export const asyncRoutes = [
       }
     ]
   },
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/icons/index'),
-        name: 'Icons',
-        meta: { title: 'Icons', icon: 'icon', noCache: true }
-      }
-    ]
-  },
+  // {
+  //   path: '/icon',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/icons/index'),
+  //       name: 'Icons',
+  //       meta: { title: 'Icons', icon: 'icon', noCache: true }
+  //     }
+  //   ]
+  // },
   // {
   //   path: '/permission',
   //   component: Layout,

@@ -16,6 +16,45 @@ export function fetch(query) {
   })
 }
 
+export function addSite(data) {
+  return request({
+    url: '/site',
+    method: 'post',
+    data
+  })
+}
+
+export function fetchSite(query) {
+  return request({
+    url: '/site',
+    method: 'get',
+    params: query
+  })
+}
+
+export function getSiteType() {
+  return request({
+    url: '/site/type',
+    method: 'get',
+    params: {}
+  })
+}
+
+export function updateSite(id, data) {
+  return request({
+    url: `/site/edit/${id}`,
+    method: 'put',
+    data
+  })
+}
+
+export function deleteSite(id) {
+  return request({
+    url: `/site/${id}`,
+    method: 'delete'
+  })
+}
+
 /**
  * 添加对象
  */
