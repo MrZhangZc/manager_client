@@ -405,10 +405,9 @@ export default {
         item.date = `${item.year}-${item.month}-${item.day}`
       })
       addDuty(this.list).then(res => {
-        // if (this.errorInfo(res)) return;
-        // this.list.unshift(res.data.data);
-        // this.dialogFormVisible = false;
-        // this.successInfo();
+        if (this.errorInfo(res)) return;
+        this.list = []
+        this.successInfo();
       });
     },
     handleUpdate(row) {
@@ -462,13 +461,13 @@ export default {
     successInfo() {
       this.$notify({
         title: "成功",
-        message: "信息操作成功",
+        message: "添加成功",
         type: "success",
         duration: 2000
       });
     },
     errorInfo(res) {
-      if (res.data && res.data.code !== 0) {
+      if (res.data && res.state === 200) {
         return true;
       } else {
         return false;

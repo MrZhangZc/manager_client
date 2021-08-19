@@ -42,6 +42,24 @@
       </el-button>
 
     </div>
+    <el-collapse v-model="activeNames" @change="handleChange">
+      <el-collapse-item title="值日说明" name="1">
+        <div>1、值日范围:值日生仅负责公共区域,卧室自行打扫;</div>
+        <div>2、值日生职责:每天更新日历,完成晚上0点前完成值日工作,完成后自己点击完成;</div>
+        <div>3、检查员职责:每天晚上10点前完成检查检查情况在每一项空格里点击通过或不通过;</div>
+      </el-collapse-item>
+      <el-collapse-item title="奖惩制度" name="2">
+        <div>1、惩罚:任一项不合格,则罚款一次10元,存入公共基金;</div>
+        <div>2、奖励:任一项不合格,10点后其他人代替完成,则奖励完成人员10元。从公共基金支出;</div>
+        <div>3、公共基金可用于缴纳水电费、购买每周食材等公共支出;</div>
+      </el-collapse-item>
+      <el-collapse-item title="其他" name="3">
+        <div>1、每周日为大扫除时间,需进行全屋拖地倒垃圾、床单更换、除螨等工作;</div>
+        <div>2、每天最后一个出门的需要注意断水断电;</div>
+        <div>3、每周六为采购日,需采购本周六日及下周的食材和水果,采购前列请单,由值日生带队前往采购。公共采购优先从公共基金支出,若不够,则由三人平分;</div>
+        <div>4、水电费:优先从公共基金支出,若不够,则由三人平分;</div>
+      </el-collapse-item>
+    </el-collapse>
     <!-- 数据列表 -->
     <el-table
       :key="tableKey"
@@ -468,6 +486,7 @@ export default {
   },
   data() {
     return {
+      activeNames: [''],
       options: [
         {
           value: 2021,
@@ -624,6 +643,9 @@ export default {
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
       });
+    },
+    handleChange(val) {
+      console.log(val);
     },
     // 添加方法
     createData() {
