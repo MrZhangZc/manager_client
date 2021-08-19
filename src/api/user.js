@@ -62,3 +62,12 @@ export function deleteModel(id) {
     method: 'delete'
   })
 }
+
+// 登陆统计
+export function loginStat(query) {
+  return request({
+    url: '/user/login/stat',
+    method: 'get',
+    params: query
+  })
+}

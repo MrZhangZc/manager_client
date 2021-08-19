@@ -261,6 +261,31 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/clockin',
+    component: Layout,
+    redirect: '/clockin/duty/list',
+    name: '打卡',
+    meta: {
+      title: '打卡',
+      icon: 'el-icon-circle-check',
+      roles: ['admin', 'clockin', 'clockin_admin']
+    },
+    children: [
+      {
+        path: '/clockin/duty/list',
+        component: () => import('@/views/clockin/dutylist'),
+        name: '值日',
+        meta: { title: '值日', icon: 'el-icon-delete', roles: ['admin', 'clockin', 'clockin_admin'] }
+      },
+      {
+        path: '/clockin/duty/set',
+        component: () => import('@/views/clockin/dutyset'),
+        name: '值日安排',
+        meta: { title: '值日安排', icon: 'el-icon-setting', roles: ['admin', 'clockin_admin'] }
+      }
+    ]
+  },
+  {
     path: '/tool',
     component: Layout,
     redirect: '/tool/ocr',
@@ -307,6 +332,12 @@ export const asyncRoutes = [
         component: () => import('@/views/role'),
         name: 'role',
         meta: { title: '权限', icon: 'el-icon-lock', roles: ['admin'] }
+      },
+      {
+        path: 'logostat',
+        component: () => import('@/views/user/logostat'),
+        name: '用户登陆统计',
+        meta: { title: '用户登陆统计', icon: 'el-icon-s-data', roles: ['admin'] }
       }
     ]
   },
