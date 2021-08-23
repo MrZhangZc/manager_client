@@ -58,7 +58,12 @@ export function updateModel(id, data) {
     data
   })
 }
-/**
- * 删除对象
- */
+
+export function screenShot(query) {
+  return request({
+    url: '/resource/screenShot',
+    method: 'get',
+    params: query
+  })
+}
 

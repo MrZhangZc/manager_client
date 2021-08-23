@@ -66,6 +66,15 @@
       >
         <template slot-scope="{row}">
           <el-button
+            type="primary"
+            size="mini"
+            icon="el-icon-edit-outline"
+            @click="handleScreenShot(row.href)"
+          >
+            快照
+          </el-button>
+
+          <el-button
             size="mini"
             type="danger"
             icon="el-icon-delete"
@@ -89,7 +98,7 @@
 </template>
 
 <script>
-import { fetchNews, deleteNews, saveNews, sendEmail, addModel, updateModel } from "@/api/crawler";
+import { fetchNews, deleteNews, saveNews, sendEmail, addModel, updateModel, screenShot } from "@/api/crawler";
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 export default {
@@ -248,6 +257,11 @@ export default {
             this.successInfo();
           });
         })
+    },
+    handleScreenShot(href) {
+      screenShot({ href }).then(res => {
+        this.successInfo();
+      });
     },
     successInfo() {
       this.$notify({
