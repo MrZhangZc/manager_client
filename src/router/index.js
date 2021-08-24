@@ -249,8 +249,14 @@ export const asyncRoutes = [
       {
         path: 'nba/list',
         component: () => import('@/views/crawler/nba'),
-        name: 'nba爬虫',
-        meta: { title: 'nba爬虫', icon: 'el-icon-basketball', roles: ['admin'] }
+        name: 'cheerio-nba爬虫',
+        meta: { title: 'cheerio-nba爬虫', icon: 'el-icon-basketball', roles: ['admin'] }
+      },
+      {
+        path: 'nba/plist',
+        component: () => import('@/views/crawler/pnba'),
+        name: 'puppeteer-nba爬虫',
+        meta: { title: 'puppeteer-nba爬虫', icon: 'el-icon-basketball', roles: ['admin'] }
       },
       {
         path: 'list',

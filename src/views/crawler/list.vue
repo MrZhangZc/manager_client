@@ -48,6 +48,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column width="180px" align="center" label="快照">
+        <template slot-scope="scope">
+          <img v-if="scope.row.screen_shot" :src="'https://file.lihailezzc.com/' + scope.row.screen_shot[0]" style="width: 150px" alt="" srcset="">
+        </template>
+      </el-table-column>
+
       <el-table-column
         label="添加时间"
         width="160px"
@@ -69,7 +75,7 @@
             type="primary"
             size="mini"
             icon="el-icon-edit-outline"
-            @click="handleScreenShot(row.href)"
+            @click="handleScreenShot(row.href, row.id)"
           >
             快照
           </el-button>
@@ -258,14 +264,15 @@ export default {
           });
         })
     },
-    handleScreenShot(href) {
-      screenShot({ href }).then(res => {
+    handleScreenShot(href, id) {
+      screenShot({ href, id }).then(response => {
+        if (this.errorInfo(response)) return;
         this.successInfo();
       });
     },
     successInfo() {
       this.$notify({
-        message: "删除成功",
+        message: "成功",
         type: "success",
         duration: 2000
       });
