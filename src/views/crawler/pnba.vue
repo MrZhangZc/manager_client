@@ -21,8 +21,8 @@
       </el-button> -->
     </div>
     <!-- 数据列表 -->
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="虎扑" name="first"><el-table
+    <el-tabs v-model="listQuery.from" @tab-click="handleClick">
+      <el-tab-pane label="虎扑" name="hupu"><el-table
         :key="tableKey"
         v-loading="listLoading"
         :data="list"
@@ -67,7 +67,7 @@
 
           </template></el-table-column>
       </el-table></el-tab-pane>
-      <el-tab-pane label="新浪" name="second"><el-table
+      <el-tab-pane label="搜狐" name="sh"><el-table
         :key="tableKey"
         v-loading="listLoading"
         :data="list"
@@ -112,52 +112,7 @@
 
           </template></el-table-column>
       </el-table></el-tab-pane>
-      <el-tab-pane label="腾讯" name="third"><el-table
-        :key="tableKey"
-        v-loading="listLoading"
-        :data="list"
-        border
-        fit
-        highlight-current-row
-        style="width: 100%;"
-      >
-        <el-table-column
-          label="标题"
-          min-width="150px"
-        >
-          <template slot-scope="{row}">
-            {{ row.title }}
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          label="链接"
-          min-width="150px"
-        >
-          <template slot-scope="{row}">
-            <el-button :href="row.href" target="_blank" @click="jump(row.href)"> {{ row.href }} </el-button>
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          label="Actions"
-          align="center"
-          width="180"
-          class-name="small-padding fixed-width"
-        >
-          <template slot-scope="{row}">
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-edit-outline"
-              @click="saveNews(row)"
-            >
-              添加收藏
-            </el-button>
-
-          </template></el-table-column>
-      </el-table></el-tab-pane>
-      <el-tab-pane label="nba官网" name="fourth"><el-table
+      <el-tab-pane label="nba官网" name="nba-web"><el-table
         :key="tableKey"
         v-loading="listLoading"
         :data="list"
@@ -216,7 +171,7 @@
 </template>
 
 <script>
-import { fetchNbaNews, saveNews, sendEmail, addModel, updateModel, deleteModel } from "@/api/crawler";
+import { saveNews, sendEmail, addModel, updateModel, deleteModel, crawlerList } from "@/api/crawler";
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 export default {
@@ -234,7 +189,6 @@ export default {
   },
   data() {
     return {
-      activeName: 'first',
       tableKey: 0,
       list: null,
       total: 0,
@@ -242,8 +196,9 @@ export default {
       listQuery: {
         currentPage: 1,
         pageSize: 20,
-
-        keyword: '杜兰特'
+        type: 'nba',
+        from: 'hupu'
+        // keyword: '杜兰特'
       },
       showReviewer: false,
       // 表单提交的数据
@@ -275,7 +230,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      fetchNbaNews(this.listQuery).then(response => {
+      crawlerList(this.listQuery).then(response => {
         this.list = response.data.data.list;
         this.total = response.data.data.total;
 

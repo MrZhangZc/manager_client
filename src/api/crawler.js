@@ -8,6 +8,14 @@ export function saveNews(data) {
   })
 }
 
+export function crawlerList(query) {
+  return request({
+    url: '/crawler/list',
+    method: 'get',
+    params: query
+  })
+}
+
 export function fetchNews(query) {
   return request({
     url: '/crawler',
