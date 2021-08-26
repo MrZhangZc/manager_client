@@ -16,6 +16,14 @@ export function crawlerList(query) {
   })
 }
 
+export function crawlerGet(query) {
+  return request({
+    url: '/crawler/pnba',
+    method: 'get',
+    params: query
+  })
+}
+
 export function fetchNews(query) {
   return request({
     url: '/crawler',

@@ -8,17 +8,17 @@
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="getList"
-      />
+      /> -->
 
       <el-button
         v-waves
         class="filter-item"
         type="primary"
         icon="el-icon-search"
-        @click="getList"
+        @click="getNestCrawler"
       >
-        搜索
-      </el-button> -->
+        获取最新
+      </el-button>
     </div>
     <!-- 数据列表 -->
     <el-tabs v-model="listQuery.from" @tab-click="handleClick">
@@ -171,7 +171,7 @@
 </template>
 
 <script>
-import { saveNews, sendEmail, addModel, updateModel, deleteModel, crawlerList } from "@/api/crawler";
+import { saveNews, sendEmail, addModel, updateModel, deleteModel, crawlerList, crawlerGet } from "@/api/crawler";
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 export default {
@@ -233,6 +233,18 @@ export default {
       crawlerList(this.listQuery).then(response => {
         this.list = response.data.data.list;
         this.total = response.data.data.total;
+
+        this.listLoading = false;
+      });
+    },
+    getNestCrawler() {
+      this.listLoading = true;
+      crawlerGet({ from: this.listQuery.from }).then(response => {
+        if (this.errorInfo(response)) return;
+        this.list = []
+        this.total = 0
+        this.getList()
+        this.successInfo();
 
         this.listLoading = false;
       });
@@ -338,7 +350,7 @@ export default {
     },
     successInfo() {
       this.$notify({
-        message: "添加收藏成功",
+        message: "成功",
         type: "success",
         duration: 2000
       });
