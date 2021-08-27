@@ -259,6 +259,12 @@ export const asyncRoutes = [
         meta: { title: 'puppeteer-nba爬虫', icon: 'el-icon-basketball', roles: ['admin'] }
       },
       {
+        path: 'it/list',
+        component: () => import('@/views/crawler/it'),
+        name: 'puppeteer-技术爬虫',
+        meta: { title: 'puppeteer-技术爬虫', icon: 'el-icon-monitor', roles: ['admin'] }
+      },
+      {
         path: 'list',
         component: () => import('@/views/crawler/list'),
         name: '收藏列表',
