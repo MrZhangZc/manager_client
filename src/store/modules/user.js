@@ -26,6 +26,9 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
+  SET_ACCOUNT: (state, account) => {
+    state.account = account
+  },
   SET_ROLES: (state, roles) => {
     state.roles = roles
   },
@@ -65,13 +68,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response.data
-
         if (!data) {
           reject('Verification failed, please Login again.')
         }
 
-        const { role, mobile, realName, avatar, _id, email, vcode } = data
-
+        const { role, mobile, realName, avatar, _id, email, vcode, account } = data
         // roles must be a non-empty array
         if (!role) {
           reject('getInfo: roles must be a non-null array!')
@@ -79,7 +80,8 @@ const actions = {
 
         commit('SET_ROLES', [role.access])
         commit('SET_NAME', mobile)
-        commit('SET_AVATAR', avatar)
+        commit('SET_AVATAR', avatar, account)
+        commit('SET_ACCOUNT', account)
         commit('SET_INTRODUCTION', realName)
         commit('SET_APIKEY', _id)
         commit('SET_EMAIL', email)

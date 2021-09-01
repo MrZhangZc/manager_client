@@ -323,6 +323,31 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/socket',
+    component: Layout,
+    redirect: '/tool/ocr',
+    name: '通信',
+    meta: {
+      title: '通信',
+      icon: 'el-icon-phone-outline',
+      roles: ['admin', 'clockin']
+    },
+    children: [
+      {
+        path: 'ocr',
+        component: () => import('@/views/socket/im'),
+        name: 'im',
+        meta: { title: 'im', icon: 'el-icon-chat-line-round', roles: ['admin', 'clockin'] }
+      },
+      {
+        path: 'content',
+        component: () => import('@/views/tool/content'),
+        name: '内容获取',
+        meta: { title: '内容获取', icon: 'el-icon-search', roles: ['admin', 'clockin'] }
+      }
+    ]
+  },
+  {
     path: '/user',
     component: Layout,
     redirect: '/user',
@@ -384,18 +409,18 @@ export const asyncRoutes = [
       }
     ]
   },
-  // {
-  //   path: '/icon',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/icons/index'),
-  //       name: 'Icons',
-  //       meta: { title: 'Icons', icon: 'icon', noCache: true }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/icon',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/icons/index'),
+        name: 'Icons',
+        meta: { title: 'Icons', icon: 'icon', noCache: true }
+      }
+    ]
+  },
   // {
   //   path: '/permission',
   //   component: Layout,

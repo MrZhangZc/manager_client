@@ -71,3 +71,11 @@ export function loginStat(query) {
     params: query
   })
 }
+
+export function getChat(query) {
+  return request({
+    url: '/user/chat',
+    method: 'get',
+    params: query
+  })
+}
