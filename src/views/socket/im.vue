@@ -28,7 +28,6 @@
                 {{ item.date }}
               </div>
               <div class="msg-from">
-                <span class="loc">[{{ item.loc }}]</span>
                 <span class="msg-author">{{ item.from }}</span>
                 <img :src="item.avatarUrl" alt="">
               </div>
@@ -41,17 +40,12 @@
               </div>
               <div class="msg-from">
                 <img :src="item.avatarUrl" alt="">
-                <span class="loc">[{{ item.loc }}]</span>
                 <span class="msg-author">{{ item.from }}</span>
               </div>
               <div class="msg-content">{{ item.content }}</div>
             </div>
 
           </div>
-
-        <!-- <div class="online">
-          microzz上线了
-        </div> -->
 
         </div>
 
@@ -61,7 +55,7 @@
           <transition name="slide-bottom">
             <div v-show="isShowEmoji" class="emoji-display">
               <ul>
-                <li v-for="item of emojis" :key="item" @click="insertText(item)">{{ item }}</li>
+                <li v-for="item of emojis" :key="emojis.indexOf(item)" @click="insertText(item)">{{ item }}</li>
               </ul>
             </div>
           </transition>
@@ -69,9 +63,10 @@
           <div class="emoji">
             <i class="icon-emoji" @click="showEmoji(isShowEmoji=!isShowEmoji);" />
           </div>
-          <textarea ref="textarea" v-model.trim="inputContent" placeholder="左上角还有智能机器人哦" @keyup.enter="send" @input="newLine" />
+          <textarea ref="textarea" v-model.trim="inputContent" placeholder="输入聊天内容" @keyup="typing()" @keyup.enter="send" @input="newLine" />
           <button @click="send">发送</button>
         </div>
+        <p class="typingInfo">{{ typingInfo }}</p>
 
       </div>
     </transition>
@@ -97,6 +92,7 @@ export default {
   data() {
     return {
       msgs: [],
+      typingInfo: '',
       inputContent: '',
       oContent: {},
       oTextarea: {},
@@ -119,6 +115,15 @@ export default {
       return this.$store.state.avatarUrl;
     }
   },
+  watch: {
+    typingInfo(val, oldVal) {
+      if (val) {
+        setTimeout(() => {
+          this.typingInfo = ''
+        }, 1000)
+      }
+    }
+  },
   // watch: {
   //   msgs(val) {
   //     localStorage.msgs_group = JSON.stringify(val);
@@ -131,12 +136,8 @@ export default {
   //     next();
   //   }
   // },
+
   mounted() {
-    this.onLineUsers.push({
-      name: this.account,
-      avatar: this.avatar,
-      index: 0
-    })
     // setInterval(() => this.isRedAI = !this.isRedAI, 2500);
 
     this.oContent = document.querySelector('.chatting-content');
@@ -149,10 +150,37 @@ export default {
       avatar: this.avatar
     });
 
-    // 获取当前在线列表
+    // 通知自己
     this.sockets.subscribe('joinNoticeSelf', data => {
-      console.log(1231231, data)
+      const { onLineList, count } = data
+      const list = Object.values(onLineList).map(i => JSON.parse(i))
+      this.onLineUsers = list
+      this.totalOnLine = count
     })
+
+    // 通知别人
+    this.sockets.subscribe('joinNoticeOther', data => {
+      const { onLineList, count, action, name } = data
+      const list = Object.values(onLineList).map(i => JSON.parse(i))
+      this.onLineUsers = list
+      this.totalOnLine = count
+      if (action === '加入了群聊') {
+        this.$notify({
+          title: name,
+          message: "加入了群聊",
+          type: "success",
+          duration: 2000
+        });
+      }
+      if (action === '离开了群聊') {
+        this.$notify({
+          title: name,
+          message: "离开了群聊",
+          type: "error",
+          duration: 2000
+        });
+      }
+    });
 
     // 接收群聊消息
     this.sockets.subscribe('receiveGroupMsg', data => {
@@ -162,15 +190,10 @@ export default {
       }, 0);
     });
 
-    // 有人加入群聊
-    this.sockets.subscribe('joinNoticeOther', data => {
-      this.onLineUsers.push(data)
-      this.totalOnLine = data.count
-      // console.log(33333333, data)
-      // const oOnline = document.createElement('div');
-      // oOnline.className = 'online';
-      // oOnline.innerText = data.name + '上线了';
-      // this.oContent.appendChild(oOnline);
+    this.sockets.subscribe("notifyTyping", data => {
+      console.log(data.user + " " + data.message)
+      this.typingInfo = data.user + " " + data.message;
+      // console.log(data.user + data.message);
     });
 
     this.$socket.on('online', (name) => {
@@ -189,12 +212,6 @@ export default {
   created() {
     this.getChatList();
   },
-  // destroyed() {
-  //   // 离开群聊
-  //   this.$socket.emit('disconnectUser', {
-  //     name: this.account
-  //   });
-  // },
   unload() {
     this.$socket.emit('disconnectUser', {
       name: this.account
@@ -217,6 +234,9 @@ export default {
         this.listLoading = false;
       });
     },
+    typing() {
+      this.$socket.emit("typing", { user: this.account, message: "正在输入" });
+    },
     send() {
       this.isShowEmoji = false;
       if (this.inputContent === '') {
@@ -224,14 +244,12 @@ export default {
       } else {
         this.$socket.emit('sendGroupMsg', {
           date: this.moment().format('YYYY-MM-DD HH:mm:ss'),
-          // loc: localStorage.addr,
           from: `${this.account}`,
           content: this.inputContent,
           avatarUrl: `http://file.lihailezzc.com${this.avatar}`
         });
         this.msgs.push({
           date: this.moment().format('YYYY-MM-DD HH:mm:ss'),
-          // loc: localStorage.addr,
           from: `${this.account}`,
           content: this.inputContent,
           self: true,
@@ -241,32 +259,6 @@ export default {
         setTimeout(() => { this.oContent.scrollTop = this.oContent.scrollHeight }, 0);
       }
     },
-    // sockets: {
-    // // 链接成功
-    //   join() {
-    //     this.$socket.emit('join', { name: 'zzc' })
-    //   },
-    //   connect(data) {
-    //     console.log(data)
-    //   },
-    //   // 发送消息
-    //   toServer(data) {
-    //     this.$socket.emit('toServer', data)
-    //   },
-    //   // 接收消息
-    //   toClient(data) {
-    //     this.msgList.push(data)
-    //   },
-    //   // 断开链接回调
-    //   disconnect() {
-    //     console.log('disconnect：', '已经断开 socket 链接')
-    //   },
-    //   // 重新连接
-    //   reconnect() {
-    //   // 自动执行，直到链接成功
-    //     this.$socket.emit('connect')
-    //   }
-    // }
 
     showEmoji(flag) {
       this.isShowEmoji = flag;
@@ -308,6 +300,7 @@ export default {
     display: flex;
     flex-direction: row;
     width: 100%;
+    height: 600px;
     .online-user-list{
       width: 30%;
       height: 20px;
@@ -368,6 +361,7 @@ export default {
     .chatting-content {
       flex: 1;
       width: 100%;
+      height: 1000px;
       background-color: rgba(0, 0, 0, .1);
       overflow: auto;
       .chatting-item {
@@ -477,7 +471,7 @@ export default {
         ul {
           display: flex;
           flex-wrap: wrap;
-
+          list-style: none;
           li {
             padding: 2px 3px;
             font-size: 2.2rem;
@@ -533,6 +527,10 @@ export default {
         }
       }
     }
+  }
+  .typingInfo{
+    height: 30px;
+    width: 180px;
   }
 </style>
 
