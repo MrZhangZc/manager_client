@@ -5,19 +5,7 @@
       <div class="chatting">
 
         <!-- 聊天界面头部 -->
-        <div class="chatting-header">
-
-          <div class="chatting-back">
-            <i :class="[isRedAI ? 'icon-back' : 'icon-back2']" @click="$router.push('/AI')" />
-          </div>
-          <div class="chatting-title">
-            <h2><i class="icon-group" />群聊</h2>
-          </div>
-          <div class="chatting-menu">
-            <i class="icon-menu" @click="$router.push('/')" />
-          </div>
-
-        </div>
+        <div class="chatting-header" />
 
         <!-- 聊天内容区域 -->
         <div ref="chattingContent" class="chatting-content" @click.stop.prevent="isShowEmoji=false">
@@ -324,36 +312,13 @@ export default {
       padding-left: 10px;
       padding-right: 15px;
 
-      .chatting-back {
-        width: 32px;
-        height: 32px;
-        .icon-back {
-          background: url('../../common/icons/icon-ai.svg') no-repeat;
-          background-size: contain;
-        }
-        .icon-back2 {
-          background: url('../../common/icons/icon-ai2.svg') no-repeat;
-          background-size: contain;
-        }
-      }
-
       .chatting-title {
         i.icon-group {
           vertical-align: top;
           width: 30px;
           height: 30px;
-          background: url('../../common/icons/icon-group.svg') no-repeat;
           background-size: contain;
           margin-right: 3px;
-        }
-      }
-
-      .chatting-menu {
-        width: 30px;
-        height: 30px;
-        i.icon-menu {
-          background: url('../../common/icons/icon-index.svg') no-repeat;
-          background-size: contain;
         }
       }
     }
@@ -490,7 +455,6 @@ export default {
           height: 100%;
           background: url('../../common/icons/icon-emoji.svg') no-repeat;
           background-size: contain;
-
         }
       }
 
