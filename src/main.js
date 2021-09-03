@@ -46,7 +46,7 @@ Vue.prototype.moment = moment;
 
 Vue.use(new VueSocketIO({
   // debug: true,
-  connection: 'http://socket.lihailezzc.com/'
+  connection: 'https://socket.lihailezzc.com/'
 }))
 
 Vue.use(VueClipboard)
