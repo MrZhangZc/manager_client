@@ -45,10 +45,8 @@ moment.locale('zh-cn');
 Vue.prototype.moment = moment;
 
 Vue.use(new VueSocketIO({
-  // 控制台调试 console.log
-  debug: true,
-  // 连接地址 后端提供
-  connection: 'http://127.0.0.1:5000'
+  // debug: true,
+  connection: 'http://socket.lihailezzc.com/'
 }))
 
 Vue.use(VueClipboard)
