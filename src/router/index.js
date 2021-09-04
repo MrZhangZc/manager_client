@@ -400,27 +400,27 @@ export const asyncRoutes = [
         component: () => import('@/views/log/blog'),
         name: 'blog',
         meta: { title: 'blog', icon: 'el-icon-edit', roles: ['admin'] }
-      },
-      {
-        path: 'blog-aggregate',
-        component: () => import('@/views/log/blogAggregate'),
-        name: 'blog聚合',
-        meta: { title: 'blog聚合', icon: 'el-icon-c-scale-to-original', roles: ['admin'] }
       }
+      // {
+      //   path: 'blog-aggregate',
+      //   component: () => import('@/views/log/blogAggregate'),
+      //   name: 'blog聚合',
+      //   meta: { title: 'blog聚合', icon: 'el-icon-c-scale-to-original', roles: ['admin'] }
+      // }
     ]
   },
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/icons/index'),
-        name: 'Icons',
-        meta: { title: 'Icons', icon: 'icon', noCache: true }
-      }
-    ]
-  },
+  // {
+  //   path: '/icon',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/icons/index'),
+  //       name: 'Icons',
+  //       meta: { title: 'Icons', icon: 'icon', noCache: true }
+  //     }
+  //   ]
+  // },
   // {
   //   path: '/permission',
   //   component: Layout,
