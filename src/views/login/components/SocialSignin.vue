@@ -1,18 +1,22 @@
 <template>
   <div class="social-signup-container">
-    <div class="sign-btn" @click="wechatHandleClick('wechat')">
+    <!-- <div class="sign-btn" @click="wechatHandleClick('wechat')">
       <span class="wx-svg-container"><svg-icon icon-class="wechat" class="icon" /></span>
       WeChat
     </div>
     <div class="sign-btn" @click="tencentHandleClick('tencent')">
       <span class="qq-svg-container"><svg-icon icon-class="qq" class="icon" /></span>
       QQ
+    </div> -->
+    <div class="sign-btn" @click="githubHandleClick('github')">
+      <span class="github-svg-container"><svg-icon icon-class="github" class="icon" /></span>
+      Github
     </div>
   </div>
 </template>
 
 <script>
-// import openWindow from '@/utils/open-window'
+import openWindow from '@/utils/open-window'
 
 export default {
   name: 'SocialSignin',
@@ -32,6 +36,14 @@ export default {
       // const redirect_uri = encodeURIComponent('xxx/redirect?redirect=' + window.location.origin + '/auth-redirect')
       // const url = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=' + client_id + '&redirect_uri=' + redirect_uri
       // openWindow(url, thirdpart, 540, 540)
+    },
+    githubHandleClick(thirdpart) {
+      // const redirect_uri = encodeURIComponent('xxx/redirect?redirect=' + window.location.origin + '/auth-redirect')
+      this.$store.commit('SET_AUTH_TYPE', thirdpart)
+      const client_id = '5b7a43052b279f07e7fb'
+      const url = 'https://github.com/login/oauth/authorize?client_id=' + client_id
+      console.log({ url })
+      openWindow(url, thirdpart, 540, 540)
     }
   }
 }
@@ -50,7 +62,8 @@ export default {
       margin-top: 8px;
     }
     .wx-svg-container,
-    .qq-svg-container {
+    .qq-svg-container,
+    .github-svg-container{
       display: inline-block;
       width: 40px;
       height: 40px;
@@ -63,6 +76,9 @@ export default {
     }
     .wx-svg-container {
       background-color: #24da70;
+    }
+    .github-svg-container {
+      background-color: #000;
     }
     .qq-svg-container {
       background-color: #6BA2D6;
