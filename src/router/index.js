@@ -181,26 +181,26 @@ export const asyncRoutes = [
     meta: {
       title: '任务管理',
       icon: 'el-icon-s-platform',
-      roles: ['admin']
+      roles: ['admin', 'guest']
     },
     children: [
       {
         path: 'list',
         component: () => import('@/views/task/emaillist'),
         name: '定时邮件任务',
-        meta: { title: '定时邮件任务', icon: 'email', roles: ['admin'] }
+        meta: { title: '定时邮件任务', icon: 'email', roles: ['admin', 'guest'] }
       },
       {
         path: 'weather',
         component: () => import('@/views/task/weatherEmail'),
         name: '每日天气邮件',
-        meta: { title: '每日天气邮件', icon: 'el-icon-sunrise', roles: ['admin'] }
+        meta: { title: '每日天气邮件', icon: 'el-icon-sunrise', roles: ['admin', 'guest'] }
       },
       {
         path: 'note',
         component: () => import('@/views/task/note'),
         name: '备忘录',
-        meta: { title: '备忘录', icon: 'el-icon-document-add', roles: ['admin'] }
+        meta: { title: '备忘录', icon: 'el-icon-document-add', roles: ['admin', 'guest'] }
       }
     ]
   },
@@ -212,20 +212,20 @@ export const asyncRoutes = [
     meta: {
       title: '资源管理',
       icon: 'el-icon-folder-checked',
-      roles: ['admin']
+      roles: ['admin', 'guest']
     },
     children: [
       {
         path: 'create',
         component: () => import('@/views/resource/create'),
         name: '上传资源',
-        meta: { title: '上传资源', icon: 'el-icon-document-add', roles: ['admin'] }
+        meta: { title: '上传资源', icon: 'el-icon-document-add', roles: ['admin', 'guest'] }
       },
       {
         path: 'list',
         component: () => import('@/views/resource/list'),
         name: '资源列表',
-        meta: { title: '资源列表', icon: 'el-icon-document-copy', roles: ['admin'] }
+        meta: { title: '资源列表', icon: 'el-icon-document-copy', roles: ['admin', 'guest'] }
       },
       {
         path: 'site',
@@ -243,32 +243,32 @@ export const asyncRoutes = [
     meta: {
       title: '爬虫管理',
       icon: 'bug',
-      roles: ['admin']
+      roles: ['admin', 'guest']
     },
     children: [
       {
         path: 'nba/list',
         component: () => import('@/views/crawler/nba'),
         name: 'cheerio-nba爬虫',
-        meta: { title: 'cheerio-nba爬虫', icon: 'el-icon-basketball', roles: ['admin'] }
+        meta: { title: 'cheerio-nba爬虫', icon: 'el-icon-basketball', roles: ['admin', 'guest'] }
       },
       {
         path: 'nba/plist',
         component: () => import('@/views/crawler/pnba'),
         name: 'puppeteer-nba爬虫',
-        meta: { title: 'puppeteer-nba爬虫', icon: 'el-icon-basketball', roles: ['admin'] }
+        meta: { title: 'puppeteer-nba爬虫', icon: 'el-icon-basketball', roles: ['admin', 'guest'] }
       },
       {
         path: 'it/list',
         component: () => import('@/views/crawler/it'),
         name: 'puppeteer-技术爬虫',
-        meta: { title: 'puppeteer-技术爬虫', icon: 'el-icon-monitor', roles: ['admin'] }
+        meta: { title: 'puppeteer-技术爬虫', icon: 'el-icon-monitor', roles: ['admin', 'guest'] }
       },
       {
         path: 'list',
         component: () => import('@/views/crawler/list'),
         name: '收藏列表',
-        meta: { title: '收藏列表', icon: 'el-icon-folder', roles: ['admin'] }
+        meta: { title: '收藏列表', icon: 'el-icon-folder', roles: ['admin', 'guest'] }
       }
     ]
   },
@@ -318,7 +318,7 @@ export const asyncRoutes = [
         path: 'content',
         component: () => import('@/views/tool/content'),
         name: '内容获取',
-        meta: { title: '内容获取', icon: 'el-icon-search', roles: ['admin'] }
+        meta: { title: '内容获取', icon: 'el-icon-search', roles: ['admin', 'guest'] }
       }
     ]
   },
@@ -330,20 +330,20 @@ export const asyncRoutes = [
     meta: {
       title: '通信',
       icon: 'el-icon-phone-outline',
-      roles: ['admin', 'clockin']
+      roles: ['admin', 'guest']
     },
     children: [
       {
         path: 'ocr',
         component: () => import('@/views/socket/im'),
         name: 'im',
-        meta: { title: 'im', icon: 'el-icon-chat-line-round', roles: ['admin', 'clockin'] }
+        meta: { title: 'im', icon: 'el-icon-chat-line-round', roles: ['admin', 'guest'] }
       },
       {
         path: 'content',
         component: () => import('@/views/tool/content'),
         name: '内容获取',
-        meta: { title: '内容获取', icon: 'el-icon-search', roles: ['admin', 'clockin'] }
+        meta: { title: '内容获取', icon: 'el-icon-search', roles: ['admin', 'guest'] }
       }
     ]
   },
@@ -386,20 +386,20 @@ export const asyncRoutes = [
     meta: {
       title: '系统日志',
       icon: 'el-icon-files',
-      roles: ['admin']
+      roles: ['admin', 'guest']
     },
     children: [
       {
         path: 'cms',
         component: () => import('@/views/log/cms'),
         name: 'cms',
-        meta: { title: 'cms', icon: 'el-icon-s-data', roles: ['admin'] }
+        meta: { title: 'cms', icon: 'el-icon-s-data', roles: ['admin', 'guest'] }
       },
       {
         path: 'blog',
         component: () => import('@/views/log/blog'),
         name: 'blog',
-        meta: { title: 'blog', icon: 'el-icon-edit', roles: ['admin'] }
+        meta: { title: 'blog', icon: 'el-icon-edit', roles: ['admin', 'guest'] }
       }
       // {
       //   path: 'blog-aggregate',
