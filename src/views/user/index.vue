@@ -92,7 +92,7 @@
             size="mini"
             type="danger"
             icon="el-icon-delete"
-            @click="handleDelete(row._id)"
+            @click="handleDelete(row.id)"
           >
             删除
           </el-button>
@@ -280,7 +280,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
 
-          updateModel(tempData._id, tempData).then(res => {
+          updateModel(tempData.id, tempData).then(res => {
             if (this.errorInfo(res)) return;
             for (const v of this.list) {
               if (v._id === tempData._id) {
@@ -323,7 +323,7 @@ export default {
       });
     },
     errorInfo(res) {
-      if (res.data && res.data.code !== 0) {
+      if (res.data && res.state === 200) {
         return true;
       } else {
         return false;
