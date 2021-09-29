@@ -273,30 +273,67 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/clockin',
+    path: '/study',
     component: Layout,
-    redirect: '/clockin/duty/list',
-    name: '打卡',
+    redirect: '/study/basic',
+    name: '学习',
     meta: {
-      title: '打卡',
-      icon: 'el-icon-circle-check',
-      roles: ['admin', 'clockin', 'clockin_admin']
+      title: '学习',
+      icon: 'el-icon-notebook-2',
+      roles: ['admin']
     },
     children: [
       {
-        path: '/clockin/duty/list',
-        component: () => import('@/views/clockin/dutylist'),
-        name: '值日',
-        meta: { title: '值日', icon: 'el-icon-delete', roles: ['admin', 'clockin', 'clockin_admin'] }
+        path: 'basic',
+        component: () => import('@/views/study/basic'),
+        name: '基础知识',
+        meta: { title: '基础知识', icon: 'el-icon-cpu', roles: ['admin'] }
       },
       {
-        path: '/clockin/duty/set',
-        component: () => import('@/views/clockin/dutyset'),
-        name: '值日安排',
-        meta: { title: '值日安排', icon: 'el-icon-setting', roles: ['admin', 'clockin_admin'] }
+        path: 'nba/plist',
+        component: () => import('@/views/crawler/pnba'),
+        name: 'puppeteer-nba爬虫',
+        meta: { title: 'puppeteer-nba爬虫', icon: 'el-icon-basketball', roles: ['admin', 'guest'] }
+      },
+      {
+        path: 'it/list',
+        component: () => import('@/views/crawler/it'),
+        name: 'puppeteer-技术爬虫',
+        meta: { title: 'puppeteer-技术爬虫', icon: 'el-icon-monitor', roles: ['admin', 'guest'] }
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/crawler/list'),
+        name: '收藏列表',
+        meta: { title: '收藏列表', icon: 'el-icon-folder', roles: ['admin', 'guest'] }
       }
     ]
   },
+  // {
+  //   path: '/clockin',
+  //   component: Layout,
+  //   redirect: '/clockin/duty/list',
+  //   name: '打卡',
+  //   meta: {
+  //     title: '打卡',
+  //     icon: 'el-icon-circle-check',
+  //     roles: ['admin', 'clockin', 'clockin_admin']
+  //   },
+  //   children: [
+  //     {
+  //       path: '/clockin/duty/list',
+  //       component: () => import('@/views/clockin/dutylist'),
+  //       name: '值日',
+  //       meta: { title: '值日', icon: 'el-icon-delete', roles: ['admin', 'clockin', 'clockin_admin'] }
+  //     },
+  //     {
+  //       path: '/clockin/duty/set',
+  //       component: () => import('@/views/clockin/dutyset'),
+  //       name: '值日安排',
+  //       meta: { title: '值日安排', icon: 'el-icon-setting', roles: ['admin', 'clockin_admin'] }
+  //     }
+  //   ]
+  // },
   {
     path: '/tool',
     component: Layout,
@@ -409,18 +446,18 @@ export const asyncRoutes = [
       // }
     ]
   },
-  // {
-  //   path: '/icon',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/icons/index'),
-  //       name: 'Icons',
-  //       meta: { title: 'Icons', icon: 'icon', noCache: true }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/icon',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/icons/index'),
+        name: 'Icons',
+        meta: { title: 'Icons', icon: 'icon', noCache: true }
+      }
+    ]
+  },
   // {
   //   path: '/permission',
   //   component: Layout,
