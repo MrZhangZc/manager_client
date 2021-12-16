@@ -166,48 +166,10 @@ export const asyncRoutes = [
         meta: { title: '类别管理', icon: 'list', roles: ['admin'] }
       },
       {
-        path: 'visitor',
-        component: () => import('@/views/blog/visitor'),
-        name: '访客统计',
-        meta: { title: '访客统计', icon: 'peoples', roles: ['admin'] }
-      }
-    ]
-  },
-  {
-    path: '/qdllblog',
-    component: Layout,
-    redirect: '/blog/list',
-    name: '勤德莱莱博客管理',
-    meta: {
-      title: '勤德莱莱博客管理',
-      icon: 'el-icon-notebook-1',
-      roles: ['admin']
-    },
-    children: [
-      {
-        path: 'create',
-        component: () => import('@/views/blog/create'),
-        name: '写文章',
-        meta: { title: '写文章', icon: 'edit', roles: ['admin'] }
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/blog/list'),
-        name: '文章列表',
-        meta: { title: '文章列表', icon: 'education', roles: ['admin'] }
-      },
-      {
-        path: 'edit/:id',
-        component: () => import('@/views/blog/edit'),
-        name: '编辑文章',
-        meta: { title: '编辑文章', noCache: true, activeMenu: '/blog/list', roles: ['admin'] },
-        hidden: true
-      },
-      {
-        path: 'category',
-        component: () => import('@/views/blog/category'),
-        name: '类别管理',
-        meta: { title: '类别管理', icon: 'list', roles: ['admin'] }
+        path: 'banner',
+        component: () => import('@/views/blog/banner'),
+        name: '轮播图管理',
+        meta: { title: '轮播图管理', icon: 'el-icon-picture', roles: ['admin'] }
       },
       {
         path: 'visitor',
@@ -217,6 +179,44 @@ export const asyncRoutes = [
       }
     ]
   },
+  // {
+  //   path: '/qdllblog',
+  //   component: Layout,
+  //   redirect: '/blogqdll/list',
+  //   name: '勤德莱莱博客管理',
+  //   meta: {
+  //     title: '勤德莱莱博客管理',
+  //     icon: 'el-icon-notebook-1',
+  //     roles: ['admin']
+  //   },
+  //   children: [
+  //     {
+  //       path: 'create',
+  //       component: () => import('@/views/blog-qd/create'),
+  //       name: '写文章',
+  //       meta: { title: '写文章', icon: 'edit', roles: ['admin'] }
+  //     },
+  //     {
+  //       path: 'list',
+  //       component: () => import('@/views/blog-qd/list'),
+  //       name: '文章列表',
+  //       meta: { title: '文章列表', icon: 'education', roles: ['admin'] }
+  //     },
+  //     {
+  //       path: 'edit/:id',
+  //       component: () => import('@/views/blog-qd/edit'),
+  //       name: '编辑文章',
+  //       meta: { title: '编辑文章', noCache: true, activeMenu: '/blogqdll/list', roles: ['admin'] },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'category',
+  //       component: () => import('@/views/blog-qd/category'),
+  //       name: '类别管理',
+  //       meta: { title: '类别管理', icon: 'list', roles: ['admin'] }
+  //     }
+  //   ]
+  // },
   {
     path: '/task',
     component: Layout,
