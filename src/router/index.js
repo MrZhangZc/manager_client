@@ -266,6 +266,12 @@ export const asyncRoutes = [
         meta: { title: '上传资源', icon: 'el-icon-document-add', roles: ['admin', 'guest'] }
       },
       {
+        path: 'create_url',
+        component: () => import('@/views/resource/create_url'),
+        name: '上传资源(url)',
+        meta: { title: '上传资源(url)', icon: 'el-icon-document-add', roles: ['admin', 'guest'] }
+      },
+      {
         path: 'list',
         component: () => import('@/views/resource/list'),
         name: '资源列表',

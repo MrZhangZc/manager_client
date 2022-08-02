@@ -8,6 +8,17 @@ export function create(data) {
   })
 }
 
+/**
+ * 添加对象
+ */
+export function createUrl(data) {
+  return request({
+    url: '/resource/url',
+    method: 'post',
+    data
+  })
+}
+
 export function fetch(query) {
   return request({
     url: '/resource',
@@ -65,6 +76,7 @@ export function addModel(data) {
     data
   })
 }
+
 /**
  * 更新对象
  */

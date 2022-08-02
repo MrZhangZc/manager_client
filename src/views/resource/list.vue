@@ -62,7 +62,7 @@
         min-width="150px"
       >
         <template slot-scope="{row}">
-          {{ row.path }}
+          {{ 'https://file.lihailezzc.com/' + row.path }}
         </template>
       </el-table-column>
 
@@ -91,6 +91,13 @@
           >
             删除
           </el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="handleClipboard(row.path,$event)"
+          >
+            复制路径
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -110,6 +117,7 @@
 import { fetch, addModel, updateModel, deleteModel } from "@/api/rescoure";
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import clipboard from '@/utils/clipboard'
 export default {
   name: "User",
   components: { Pagination },
@@ -163,6 +171,9 @@ export default {
     this.getList();
   },
   methods: {
+    handleClipboard(text, event) {
+      clipboard(text, event)
+    },
     getList() {
       this.listLoading = true;
       fetch(this.listQuery).then(response => {
