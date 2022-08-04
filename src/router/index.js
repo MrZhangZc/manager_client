@@ -286,6 +286,37 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/djjl',
+    component: Layout,
+    redirect: '/djjl/player',
+    name: '电竞经理',
+    meta: {
+      title: '电竞经理',
+      icon: 'el-icon-orange',
+      roles: ['admin', 'guest']
+    },
+    children: [
+      {
+        path: 'player',
+        component: () => import('@/views/djjl/player'),
+        name: '选手管理',
+        meta: { title: '选手管理', icon: 'people', roles: ['admin', 'guest'] }
+      },
+      {
+        path: 'tag',
+        component: () => import('@/views/resource/create_url'),
+        name: '上传资源(url)',
+        meta: { title: '上传资源(url)', icon: 'el-icon-document-add', roles: ['admin', 'guest'] }
+      },
+      {
+        path: 'nick_name',
+        component: () => import('@/views/resource/list'),
+        name: '资源列表',
+        meta: { title: '资源列表', icon: 'el-icon-document-copy', roles: ['admin', 'guest'] }
+      }
+    ]
+  },
+  {
     path: '/crawler',
     component: Layout,
     redirect: '/task/crawler/list',
