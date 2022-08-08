@@ -41,9 +41,9 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column width="180px" align="center" label="封面">
+      <el-table-column width="180px" align="center" label="照片">
         <template slot-scope="scope">
-          <img :src="'https://file.lihailezzc.com/' + scope.row.pic_path" style="width: 150px" alt="" srcset="">
+          <img :src="'https://file.lihailezzc.com/' + scope.row.photo" style="width: 150px" alt="" srcset="">
         </template>
       </el-table-column>
 
@@ -54,36 +54,38 @@
         <template slot-scope="{row}">
           <span
             class="link-type"
-            @click="handleUpdate(row)"
-          >{{ row.title }}</span>
+          >{{ row.team }}-{{ row.place }}-{{ row.name }}-{{ row.point }}分 </span>
         </template>
       </el-table-column>
 
       <el-table-column
-        label="描述"
+        label="年限"
         min-width="150px"
       >
         <template slot-scope="{row}">
-          {{ row.desc }}
+          {{ row.year_name }}
         </template>
       </el-table-column>
 
       <el-table-column
-        label="博客地址"
+        label="品质"
         min-width="150px"
       >
         <template slot-scope="{row}">
-          {{ row.post_path }}
+          {{ row.quality === 1 ? 'SSR' :row.quality === 2 ? 'SR' : 'R' }}
         </template>
       </el-table-column>
 
       <el-table-column
-        label="创建时间"
-        width="160px"
-        align="center"
+        label="熟练英雄"
+        min-width="150px"
       >
-        <template slot-scope="scope">
-          <span>{{ new Date(scope.row.createdAt) | formatTime("{y}-{m}-{d} {h}:{i}") }}</span>
+        <template slot-scope="{row}">
+          <div v-for="item in row.hero_info" :key="item.id">
+            <img :src="'https://file.lihailezzc.com/' +item.icon" :style="{height:50,width:50}">
+            <span>{{ item.name }}</span>
+          </div>
+          <!-- {{ row.quality === 1 ? 'SSR' :row.quality === 2 ? 'SR' : 'R' }} -->
         </template>
       </el-table-column>
 
@@ -102,7 +104,7 @@
           >
             编辑
           </el-button>
-
+          <!--
           <el-button
             size="mini"
             type="danger"
@@ -110,7 +112,7 @@
             @click="handleDelete(row.id)"
           >
             删除
-          </el-button>
+          </el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -216,7 +218,7 @@ export default {
         // 查询关键字
         isPaging: true,
         currentPage: 1,
-        pageSize: 20,
+        pageSize: 10,
 
         search: undefined
       },
@@ -245,7 +247,7 @@ export default {
       this.listLoading = true;
       getPlayer(this.listQuery).then(response => {
         this.list = response.data.data.list;
-        this.total = response.data.data.count;
+        this.total = response.data.data.total;
 
         this.listLoading = false;
       });
