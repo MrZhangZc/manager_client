@@ -78,12 +78,14 @@
 
       <el-table-column
         label="熟练英雄"
-        min-width="150px"
+        width="300px"
       >
         <template slot-scope="{row}">
-          <div v-for="item in row.hero_info" :key="item.id">
-            <img :src="'https://file.lihailezzc.com/' +item.icon" :style="{height:50,width:50}">
-            <span>{{ item.name }}</span>
+          <div :style="{display:'flex', flexDirection: 'row', width:'450px'}">
+            <div v-for="item in row.hero_info" :key="item.id" :style="{display:'flex', flexDirection: 'column', flexWrap: 'wrap', width:'50px'}">
+              <img :src="'https://file.lihailezzc.com/' +item.icon" :style="{height:50,width:50}">
+              <span>{{ item.name }}</span>
+            </div>
           </div>
           <!-- {{ row.quality === 1 ? 'SSR' :row.quality === 2 ? 'SR' : 'R' }} -->
         </template>
