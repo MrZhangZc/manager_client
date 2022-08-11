@@ -303,6 +303,12 @@ export const asyncRoutes = [
         meta: { title: '选手管理', icon: 'people', roles: ['admin', 'guest'] }
       },
       {
+        path: 'gift',
+        component: () => import('@/views/djjl/gift'),
+        name: '礼包管理',
+        meta: { title: '礼包管理', icon: 'el-icon-cold-drink', roles: ['admin', 'guest'] }
+      },
+      {
         path: 'tag',
         component: () => import('@/views/resource/create_url'),
         name: '上传资源(url)',

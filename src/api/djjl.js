@@ -8,6 +8,30 @@ export function getPlayer(query) {
   })
 }
 
+export function getDjjlGift(query) {
+  return request({
+    url: '/djjl/gift',
+    method: 'get',
+    params: query
+  })
+}
+
+export function addDjjlGift(data) {
+  return request({
+    url: '/djjl/gift',
+    method: 'post',
+    data
+  })
+}
+
+export function updateDjjlGift(id, data) {
+  return request({
+    url: `/djjl/gift/${id}`,
+    method: 'put',
+    data
+  })
+}
+
 export function getBanner(query) {
   return request({
     url: '/banner',
