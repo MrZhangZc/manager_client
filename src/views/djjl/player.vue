@@ -4,7 +4,7 @@
     <div class="filter-container">
       <el-input
         v-model="listQuery.search"
-        placeholder="类别名"
+        placeholder="选手昵称"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
@@ -77,6 +77,36 @@
       </el-table-column>
 
       <el-table-column
+        label="技能"
+        width="150px"
+      >
+        <template slot-scope="{row}">
+          <div :style="{display:'flex', flexDirection: 'row', width:'450px'}">
+            <div v-for="item in row.skill_info" :key="item.id" :style="{display:'flex', flexDirection: 'column', flexWrap: 'wrap', width:'50px'}">
+              <img :src="'https://file.lihailezzc.com/' +item.icon" :style="{height:50,width:50}">
+              <span>{{ item.name }}</span>
+            </div>
+          </div>
+          <!-- {{ row.quality === 1 ? 'SSR' :row.quality === 2 ? 'SR' : 'R' }} -->
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="招牌英雄"
+        width="150px"
+      >
+        <template slot-scope="{row}">
+          <div :style="{display:'flex', flexDirection: 'row', width:'450px'}">
+            <div v-for="item in row.sign_hero_info" :key="item.id" :style="{display:'flex', flexDirection: 'column', flexWrap: 'wrap', width:'50px'}">
+              <img :src="'https://file.lihailezzc.com/' +item.icon" :style="{height:50,width:50}">
+              <span>{{ item.name }}</span>
+            </div>
+          </div>
+          <!-- {{ row.quality === 1 ? 'SSR' :row.quality === 2 ? 'SR' : 'R' }} -->
+        </template>
+      </el-table-column>
+
+      <el-table-column
         label="熟练英雄"
         width="300px"
       >
@@ -141,35 +171,106 @@
         style="width: 400px; margin-left:50px;"
       >
         <el-form-item
-          label="标题"
-          prop="title"
+          label="选手id"
+          prop="name"
         >
-          <el-input v-model="temp.title" />
+          <el-input v-model="temp.name" />
         </el-form-item>
 
         <el-form-item
-          label="描述"
-          prop="desc"
+          label="赛季"
+          prop="year_name"
         >
-          <el-input v-model="temp.desc" />
+          <el-input v-model="temp.year_name" />
         </el-form-item>
 
         <el-form-item
-          label="图片地址"
-          prop="pic_path"
+          label="品质"
+          prop="quality"
         >
-          <el-input v-model="temp.pic_path" />
+          <el-input v-model="temp.quality" />
         </el-form-item>
 
         <el-form-item
-          label="文章地址"
-          prop="post_path"
+          label="战队"
+          prop="team"
         >
-          <el-input v-model="temp.post_path" />
+          <el-input v-model="temp.team" />
         </el-form-item>
 
-        <el-form-item v-if="temp.createdAt" label="时间">
-          {{ new Date(temp.createdAt) | parseTime }}
+        <el-form-item
+          label="评分"
+          prop="point"
+        >
+          <el-input v-model="temp.point" />
+        </el-form-item>
+
+        <el-form-item
+          label="照片"
+          prop="photo"
+        >
+          <el-input v-model="temp.photo" />
+        </el-form-item>
+
+        <el-form-item
+          label="位置"
+          prop="place"
+        >
+          <el-input v-model="temp.place" />
+        </el-form-item>
+
+        <el-form-item
+          label="招牌英雄"
+          prop="sign_hero"
+        >
+          <el-select v-model="temp.sign_hero" filterable multiple placeholder="请选择">
+            <el-option
+              v-for="item in heroList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            >
+              <img :src="'https://file.lihailezzc.com/' + item.icon" style="width: 25px;height:25px;margin-right: 15px;border-radius:50%" alt="" srcset="">
+              <span>{{ item.name }}</span>
+              <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.id }}</span> -->
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item
+          label="熟练英雄"
+          prop="hero"
+        >
+          <el-select v-model="temp.hero" filterable multiple placeholder="请选择">
+            <el-option
+              v-for="item in heroList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            >
+              <img :src="'https://file.lihailezzc.com/' + item.icon" style="width: 25px;height:25px;margin-right: 15px;border-radius:50%" alt="" srcset="">
+              <span>{{ item.name }}</span>
+              <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.id }}</span> -->
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item
+          label="技能"
+          prop="skill"
+        >
+          <el-select v-model="temp.skill" filterable multiple placeholder="请选择">
+            <el-option
+              v-for="item in skillList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            >
+              <img :src="'https://file.lihailezzc.com/' + item.icon" style="width: 25px;height:25px;margin-right: 15px;border-radius:50%" alt="" srcset="">
+              <span>{{ item.name }}</span>
+              <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.id }}</span> -->
+            </el-option>
+          </el-select>
         </el-form-item>
 
       </el-form>
@@ -193,8 +294,8 @@
 </template>
 
 <script>
-import { addBanner, deleteBanner, updateBanner } from "@/api/banner";
-import { getPlayer } from "@/api/djjl";
+import { deleteBanner } from "@/api/banner";
+import { getPlayer, getAllHero, getAllSkill, addPlayer, updatePlayer } from "@/api/djjl";
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 export default {
@@ -214,6 +315,8 @@ export default {
     return {
       tableKey: 0,
       list: null,
+      heroList: [],
+      skillList: [],
       total: 0,
       listLoading: true,
       listQuery: {
@@ -227,11 +330,7 @@ export default {
       showReviewer: false,
       // 表单提交的数据
       temp: {
-        id: undefined,
-        title: "",
-        desc: "",
-        pic_path: "",
-        post_path: ""
+        id: undefined
       },
       dialogFormVisible: false,
       dialogStatus: "",
@@ -243,6 +342,8 @@ export default {
   },
   created() {
     this.getList();
+    this.getHreo();
+    this.getSkill();
   },
   methods: {
     getList() {
@@ -254,6 +355,22 @@ export default {
         this.listLoading = false;
       });
     },
+    getHreo() {
+      this.listLoading = true;
+      getAllHero().then(response => {
+        this.heroList = response.data.data;
+
+        this.listLoading = false;
+      });
+    },
+    getSkill() {
+      this.listLoading = true;
+      getAllSkill().then(response => {
+        this.skillList = response.data.data;
+
+        this.listLoading = false;
+      });
+    },
     handleFilter() {
       this.listQuery.currentPage = 1;
       this.getList();
@@ -261,11 +378,7 @@ export default {
 
     resetTemp() {
       this.temp = {
-        id: undefined,
-        title: "",
-        desc: "",
-        pic_path: "",
-        post_path: ""
+        id: undefined
       };
     },
     // 弹起添加界面
@@ -281,7 +394,7 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          addBanner(this.temp).then(res => {
+          addPlayer(this.temp).then(res => {
             if (this.errorInfo(res)) return;
             this.list.unshift(res.data.data);
             this.dialogFormVisible = false;
@@ -304,7 +417,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
 
-          updateBanner(tempData.id, { name: tempData.name, abbreviation: tempData.abbreviation }).then(res => {
+          updatePlayer(tempData.id, { name: tempData.name, year_name: tempData.year_name, quality: tempData.quality, skill: tempData.skill, sign_hero: tempData.sign_hero, hero: tempData.hero, team: tempData.team, point: tempData.point, photo: tempData.photo, bg_photo: tempData.photo, place: tempData.place }).then(res => {
             if (this.errorInfo(res)) return;
             for (const v of this.list) {
               if (v.id === tempData.id) {

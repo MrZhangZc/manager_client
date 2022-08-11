@@ -8,9 +8,33 @@ export function getPlayer(query) {
   })
 }
 
+export function addPlayer(data) {
+  return request({
+    url: '/djjl/player',
+    method: 'post',
+    data
+  })
+}
+
+export function updatePlayer(id, data) {
+  return request({
+    url: `/djjl/player/${id}`,
+    method: 'put',
+    data
+  })
+}
+
 export function getDjjlGift(query) {
   return request({
     url: '/djjl/gift',
+    method: 'get',
+    params: query
+  })
+}
+
+export function getHero(query) {
+  return request({
+    url: '/djjl/hero',
     method: 'get',
     params: query
   })
@@ -24,11 +48,41 @@ export function addDjjlGift(data) {
   })
 }
 
+export function addHero(data) {
+  return request({
+    url: '/djjl/hero',
+    method: 'post',
+    data
+  })
+}
+
+export function updateHero(id, data) {
+  return request({
+    url: `/djjl/hero/${id}`,
+    method: 'put',
+    data
+  })
+}
+
 export function updateDjjlGift(id, data) {
   return request({
     url: `/djjl/gift/${id}`,
     method: 'put',
     data
+  })
+}
+
+export function getAllHero() {
+  return request({
+    url: `/djjl/all_hero`,
+    method: 'get'
+  })
+}
+
+export function getAllSkill() {
+  return request({
+    url: `/djjl/all_skill`,
+    method: 'get'
   })
 }
 

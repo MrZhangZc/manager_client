@@ -42,18 +42,9 @@
       style="width: 100%;"
     >
 
-      <el-table-column
-        label="排序"
-        min-width="50px"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.rank_num }} </span>
-        </template>
-      </el-table-column>
-
       <el-table-column width="180px" align="center" label="icon">
         <template slot-scope="scope">
-          <img :src="scope.row.icon" style="width: 150px" alt="" srcset="">
+          <img :src="'https://file.lihailezzc.com/' + scope.row.icon" style="width: 150px" alt="" srcset="">
         </template>
       </el-table-column>
 
@@ -62,34 +53,7 @@
         min-width="150px"
       >
         <template slot-scope="{row}">
-          <span>{{ row.title }} </span>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        label="标签"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.tag }} </span>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        label="活动地址"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          {{ row.href }}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        label="结束时间"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          {{ row.end_time | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}
+          <span>{{ row.name }} </span>
         </template>
       </el-table-column>
 
@@ -107,26 +71,6 @@
             @click="handleUpdate(row)"
           >
             编辑
-          </el-button>
-
-          <el-button
-            v-if="row.state === 0"
-            size="mini"
-            type="primary"
-            icon="el-icon-delete"
-            @click="handleUpdateState(row.id)"
-          >
-            上架
-          </el-button>
-
-          <el-button
-            v-if="row.state === 1"
-            size="mini"
-            type="danger"
-            icon="el-icon-delete"
-            @click="handleUpdateState(row.id)"
-          >
-            下架
           </el-button>
         </template>
       </el-table-column>
@@ -155,9 +99,9 @@
       >
         <el-form-item
           label="标题"
-          prop="title"
+          prop="name"
         >
-          <el-input v-model="temp.title" />
+          <el-input v-model="temp.name" />
         </el-form-item>
 
         <el-form-item
@@ -165,24 +109,6 @@
           prop="icon"
         >
           <el-input v-model="temp.icon" type="textarea" autosize="{ minRows: 2, maxRows: 4 }" />
-        </el-form-item>
-
-        <el-form-item
-          label="标签"
-          prop="tag"
-        >
-          <el-input v-model="temp.tag" />
-        </el-form-item>
-
-        <el-form-item
-          label="活动地址"
-          prop="href"
-        >
-          <el-input v-model="temp.href" type="textarea" autosize="{ minRows: 2, maxRows: 4 }" />
-        </el-form-item>
-
-        <el-form-item label="结束时间" prop="end_time">
-          <el-date-picker v-model="temp.end_time" type="datetime" placeholder="Please pick a date" />
         </el-form-item>
 
       </el-form>
@@ -207,11 +133,11 @@
 
 <script>
 import { deleteBanner } from "@/api/banner";
-import { getDjjlGift, addDjjlGift, updateDjjlGift } from "@/api/djjl";
+import { getHero, addHero, updateHero } from "@/api/djjl";
 import waves from "@/directive/waves"; // waves directive
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 export default {
-  name: "DjjlGift",
+  name: "Hero",
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -240,8 +166,7 @@ export default {
       showReviewer: false,
       // 表单提交的数据
       temp: {
-        id: undefined,
-        title: ""
+        id: undefined
       },
       dialogFormVisible: false,
       dialogStatus: "",
@@ -257,7 +182,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      getDjjlGift(this.listQuery).then(response => {
+      getHero(this.listQuery).then(response => {
         this.list = response.data.data.list;
         this.total = response.data.data.total;
 
@@ -271,8 +196,7 @@ export default {
 
     resetTemp() {
       this.temp = {
-        id: undefined,
-        title: ""
+        id: undefined
       };
     },
     // 弹起添加界面
@@ -288,7 +212,7 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          addDjjlGift(this.temp).then(res => {
+          addHero(this.temp).then(res => {
             if (this.errorInfo(res)) return;
             this.list.unshift(res.data.data);
             this.dialogFormVisible = false;
@@ -310,8 +234,7 @@ export default {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
           const tempData = Object.assign({}, this.temp);
-          console.log(1111, tempData)
-          updateDjjlGift(tempData.id, { name: tempData.name, abbreviation: tempData.abbreviation }).then(res => {
+          updateHero(tempData.id, { name: tempData.name, icon: tempData.icon }).then(res => {
             if (this.errorInfo(res)) return;
             for (const v of this.list) {
               if (v.id === tempData.id) {
